@@ -1,0 +1,4 @@
+- name: Install Starship
+  shell: "curl -sS https://starship.rs/install.sh | sh"
+  environment:
+    STARSHIP_INSTALL_ACCEPT: "y"

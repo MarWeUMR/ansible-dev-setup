@@ -1,0 +1,17 @@
+- hosts: localhost
+  vars:
+    download_dir: "~/Downloads"
+    install_dir: "~/.local/bin"
+  tasks:
+    - name: Create folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ download_dir }}"
+        - "{{ install_dir }}"
+    - import_tasks: fish/setup.yml
+    - import_tasks: starship/setup.yml
+    - import_tasks: zellij/setup.yml
+    # - include: zoxide/setup.yml
+

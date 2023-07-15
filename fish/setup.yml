@@ -1,0 +1,40 @@
+---
+- name: Update APT package cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install gpg-agent
+  apt:
+    name: gpg-agent
+    state: present
+  become: true
+
+- name: Add the Fish shell PPA
+  command: apt-add-repository -y ppa:fish-shell/release-3
+  become: true
+
+- name: Install Fish shell
+  apt:
+    name: fish
+    state: present
+  become: true
+
+- name: Get the full path to the fish executable
+  command: which fish
+  register: fish_path
+  changed_when: false
+
+# TODO:
+# this might need adjustments depending on the user/system config
+# - name: Make Fish the default shell
+#   command: chsh -s "{{ fish_path.stdout }}"
+#   become: true
+#   vars:
+#     ansible_become_user: "{{ ansible_env.SUDO_USER }}"
+
+- name: Make Fish the default shell
+  command: chsh -s "{{ fish_path.stdout }}"
+  become: true
+  vars:
+    ansible_become_user: root
