@@ -1,4 +1,38 @@
-- name: Install Starship
-  shell: "curl -sS https://starship.rs/install.sh | sh"
-  environment:
-    STARSHIP_INSTALL_ACCEPT: "y"
+- uri:
+    url: https://api.github.com/repos/starship/starship/releases/latest
+    return_content: true
+  register: starship_latest
+
+- name: Set latest starship release
+  set_fact:
+    latest_version: "{{ starship_latest.json.tag_name }}"
+
+- name: Download starship release tarball
+  get_url:
+    # https://github.com/starship/starship/releases/download/v1.15.0/starship-x86_64-unknown-linux-musl.tar.gz
+    url: "https://github.com/starship/starship/releases/download/{{ latest_version }}/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    dest: "{{ download_dir }}/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    mode: "755"
+
+- name: Extract starship tarball
+  unarchive:
+    src: "{{ download_dir }}/starship-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+
+- name: Set execution bit for starship binary
+  file:
+    path: "{{ install_dir }}/starship"
+    mode: "+x"
+
+- name: Update fish config - add starship init line
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    line: "    starship init fish | source"
+    insertafter: '^\s*# sourcing tools'
+
+- name: Update fish config - add empty line
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    line: "\n"
+    insertafter: '^\s*# sourcing tools'
