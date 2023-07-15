@@ -9,7 +9,6 @@
 
 - name: Download Zellij release tarball
   get_url:
-    # https://github.com/zellij-org/zellij/releases/download/{{ latest_version }}/zellij-x86_64-unknown-linux-musl.tar.gz
     url: "https://github.com/zellij-org/zellij/releases/download/{{ latest_version }}/zellij-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
     dest: "{{ download_dir }}/zellij-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
     mode: "755"

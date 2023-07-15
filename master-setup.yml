@@ -1,7 +1,7 @@
 - hosts: localhost
   vars:
-    download_dir: "~/Downloads"
-    install_dir: "~/.local/bin"
+    download_dir: "{{ ansible_env.HOME }}/Downloads" # TODO: this should be in a /tmp folder
+    install_dir: "{{ ansible_env.HOME }}/.local/bin"
   tasks:
     - name: Create folders
       file:
@@ -10,8 +10,20 @@
       with_items:
         - "{{ download_dir }}"
         - "{{ install_dir }}"
+
+    - name: Update shell configuration
+      lineinfile:
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+        line: 'export PATH="$PATH:{{ install_dir }}"'
+        insertafter: EOF
+      register: line_in_file
+
+    - name: Reload shell configuration
+      shell: 'source "{{ ansible_env.HOME }}/.bashrc" && echo $PATH'
+      register: reloaded_path
+      changed_when: false
+
     - import_tasks: fish/setup.yml
     - import_tasks: starship/setup.yml
     - import_tasks: zellij/setup.yml
     # - include: zoxide/setup.yml
-
