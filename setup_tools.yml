@@ -1,0 +1,37 @@
+- name: Fetch latest {{ software.name }} release
+  uri:
+    url: "{{ software.url }}"
+    return_content: true
+  register: latest_release
+
+- name: Set latest {{ software.name }} release
+  set_fact:
+    latest_version: "{{ latest_release.json.tag_name }}"
+    latest_version_no_v: "{{ latest_release.json.tag_name | replace('v', '') }}"
+
+- name: Construct download url for {{ software.name }}
+  set_fact:
+    download_url: "{{ software.base_download_url | regex_replace('{version}', latest_version) | regex_replace('{version_no_v}', latest_version_no_v) | regex_replace('{ansible_architecture}', ansible_architecture) }}"
+
+- name: Download {{ software.name }} release tarball
+  get_url:
+    url: "{{ download_url }}"
+    dest: "{{ download_dir }}/{{ software.name }}-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    mode: "755"
+
+- name: Extract {{ software.name }} tarball
+  unarchive:
+    src: "{{ download_dir }}/{{ software.name }}-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+
+- name: Set execution bit for {{ software.name }} binary
+  file:
+    path: "{{ install_dir }}/{{ software.name }}"
+    mode: "+x"
+
+- name: Update fish config - add {{ software.name }} init line
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    line: "    {{ software.name }} init fish | source"
+    insertafter: '^\s*# sourcing tools'

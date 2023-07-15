@@ -1,4 +1,5 @@
 ---
+# TODO: seems like fish is not the default when starting zellij
 - name: Update APT package cache
   apt:
     update_cache: yes
@@ -44,7 +45,7 @@
     path: "{{ item }}"
     state: "{{ 'directory' if item.endswith('/') else 'touch' }}"
   loop:
-    - "{{ ansible_env.HOME }}/.config/fish/" # - "{{ ansible_env.HOME }}/.config/fish/config.fish"
+    - "{{ ansible_env.HOME }}/.config/fish/"
   become: true
 
 - name: Generate fish config file from template
