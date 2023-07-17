@@ -1,0 +1,29 @@
+- name: Download Neovim Nightly tarball
+  get_url:
+    url: "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+    dest: "{{ download_dir }}/nvim-linux64.tar.gz"
+    mode: "755"
+
+- name: Extract Neovim tarball
+  unarchive:
+    src: "{{ download_dir }}/nvim-linux64.tar.gz"
+    dest: "{{ install_dir }}"
+    remote_src: true
+
+- name: Set execution bit for Neovim binary
+  file:
+    path: "{{ install_dir }}/nvim-linux64/bin/nvim"
+    mode: "+x"
+
+- name: Update fish config - add empty line
+  lineinfile:
+    path: "{{ ansible_env['HOME'] }}/.config/fish/config.fish"
+    line: "    fish_add_path {{ install_dir }}/nvim-linux64/bin"
+    insertafter: '^\s*# additional environment paths'
+
+- name: Clone Neovim config
+  git:
+    repo: "https://github.com/MarWeUMR/nvim.git"
+    dest: "{{ ansible_env['HOME'] }}/.config/nvim"
+    clone: yes
+    update: yes

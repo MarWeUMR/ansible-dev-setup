@@ -35,3 +35,4 @@
     path: "{{ ansible_env.HOME }}/.config/fish/config.fish"
     line: "    {{ software.name }} init fish | source"
     insertafter: '^\s*# sourcing tools'
+  when: software.init_required
