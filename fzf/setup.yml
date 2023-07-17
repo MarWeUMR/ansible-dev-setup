@@ -7,5 +7,4 @@
 
 - name: Install fzf
   command:
-    cmd: "{{ ansible_env['HOME'] }}/.fzf/install --all"
-    warn: false
+    cmd: "{{ ansible_env['HOME'] }}/.fzf/install"
