@@ -28,3 +28,11 @@
     clone: yes
     update: yes
     force: yes
+
+- name: Install Node.js and npm (Debian)
+  become: true
+  apt:
+    name:
+      - nodejs
+      - npm
+    update_cache: yes
