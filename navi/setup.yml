@@ -1,0 +1,25 @@
+- uri:
+    url: https://api.github.com/repos/denisidoro/navi/releases/latest
+    return_content: true
+  register: navi_latest
+
+- name: Set latest navi release
+  set_fact:
+    latest_version: "{{ navi_latest.json.tag_name }}"
+
+- name: Download navi release tarball
+  get_url:
+    url: "https://github.com/denisidoro/navi/releases/download/{{ latest_version }}/navi-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    dest: "{{ download_dir }}/navi-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    mode: "755"
+
+- name: Extract navi tarball
+  unarchive:
+    src: "{{ download_dir }}/navi-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+
+- name: Set execution bit for navi binary
+  file:
+    path: "{{ install_dir }}/navi"
+    mode: "+x"

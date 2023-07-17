@@ -8,20 +8,28 @@
           name: "zoxide",
           url: "https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest",
           base_download_url: "https://github.com/ajeetdsouza/zoxide/releases/download/{version}/zoxide-{version_no_v}-{ansible_architecture}-unknown-linux-musl.tar.gz",
-          init_required: true
+          init_required: true,
         } #    https://github.com/ajeetdsouza/zoxide/releases/download/v0.9.1/zoxide-0.9.1-x86_64-unknown-linux-musl.tar.gz
       - {
           name: "starship",
           url: "https://api.github.com/repos/starship/starship/releases/latest",
           base_download_url: "https://github.com/starship/starship/releases/download/{version}/starship-{ansible_architecture}-unknown-linux-musl.tar.gz",
-          init_required: true
+          init_required: true,
         } # https://github.com/starship/starship/releases/download/v1.15.0/starship-x86_64-unknown-linux-musl.tar.gz
       - {
           name: "zellij",
           url: "https://api.github.com/repos/zellij-org/zellij/releases/latest",
           base_download_url: "https://github.com/zellij-org/zellij/releases/download/{version}/zellij-{ansible_architecture}-unknown-linux-musl.tar.gz",
-          init_required: false
+          init_required: false,
         } # https://github.com/zellij-org/zellij/releases/download/v0.37.2/zellij-x86_64-unknown-linux-musl.tar.gz
+
+      - {
+          name: "navi",
+          url: "https://api.github.com/repos/denisidoro/navi/releases/latest",
+          base_download_url: "https://github.com/denisidoro/navi/releases/download/{version}/navi-{version}-{ansible_architecture}-unknown-linux-musl.tar.gz",
+          init_required: false,
+        } # https://github.com/denisidoro/navi/releases/download/v2.22.1/navi-v2.22.1-x86_64-unknown-linux-musl.tar.gz
+
   tasks:
     - name: Create folders
       file:
