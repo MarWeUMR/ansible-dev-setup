@@ -27,3 +27,4 @@
     dest: "{{ ansible_env['HOME'] }}/.config/nvim"
     clone: yes
     update: yes
+    force: yes
