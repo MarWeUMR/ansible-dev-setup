@@ -1,4 +1,6 @@
 - hosts: localhost
+  vars_files:
+    - vault.yml
   vars:
     download_dir: "{{ ansible_env.HOME }}/Downloads" # TODO: this should be in a /tmp folder
     install_dir: "{{ ansible_env.HOME }}/.local/bin"
