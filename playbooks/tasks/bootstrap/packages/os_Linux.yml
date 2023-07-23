@@ -1,0 +1,26 @@
+---
+
+- name: Stop packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: stopped
+  become: true
+  tags: always
+  when: in_docker.rc != 0
+
+- name: Include distro-specific package tasks
+  ansible.builtin.include_tasks: "tasks/bootstrap/packages/distro_{{ ansible_distribution }}.yml"
+  tags: always
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  tags: [ packages, dnf, apt ]
+
+- name: Start packagekit
+  ansible.builtin.systemd:
+    name: packagekit
+    state: started
+  become: true
+  tags: always
+  when: in_docker.rc != 0

@@ -17,7 +17,7 @@
   unarchive:
     src: "{{ download_dir }}/navi-{{ latest_version }}-{{ ansible_architecture }}-unknown-linux-musl.tar.gz"
     dest: "{{ install_dir }}"
-    remote_src: yes
+    remote_src: true
 
 - name: Set execution bit for navi binary
   file:

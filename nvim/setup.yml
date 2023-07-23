@@ -25,9 +25,9 @@
   git:
     repo: "https://github.com/MarWeUMR/nvim.git"
     dest: "{{ ansible_env['HOME'] }}/.config/nvim"
-    clone: yes
-    update: yes
-    force: yes
+    clone: true
+    update: true
+    force: true
 
 - name: Install Node.js and npm (Debian)
   become: true
@@ -35,4 +35,4 @@
     name:
       - nodejs
       - npm
-    update_cache: yes
+    update_cache: true

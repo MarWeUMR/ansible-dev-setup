@@ -1,0 +1,27 @@
+[core]
+  excludesfile = {{ ansible_user_dir }}/.gitignore
+  editor = vim
+  pager = delta
+
+[delta]
+  syntax-theme = Solarized (light)
+  navigate = true
+  line-numbers = true
+  navigate = true    # use n and N to move between diff sections
+  light = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+
+
+[interactive]
+  diffFilter = delta --color-only
+
+[user]
+  name = {{ ansible_user_gecos }}
+  username = MarWeUMR
+  email = {{ email }}
+
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+  colorMoved = default

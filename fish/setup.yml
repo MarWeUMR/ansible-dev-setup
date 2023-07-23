@@ -2,7 +2,7 @@
 # TODO: seems like fish is not the default when starting zellij
 - name: Update APT package cache
   apt:
-    update_cache: yes
+    update_cache: true
   become: true
 
 - name: Install gpg-agent

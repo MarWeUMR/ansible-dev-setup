@@ -1,0 +1,9 @@
+---
+
+repos:
+
+  - name: fish
+    repo: ppa:fish-shell/release-3
+    keyserver: keyserver.ubuntu.com
+    # id: 5B7FC40A404FAD98548806028AC9B4BBBAB4900B
+    system_type: [ cli ]
