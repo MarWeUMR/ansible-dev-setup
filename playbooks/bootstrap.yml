@@ -18,14 +18,6 @@
 
   tasks:
 
-    - name: Print all variables
-      debug:
-        var: hostvars[inventory_hostname]
-
-    - name: Debug
-      ansible.builtin.debug:
-        msg: "{{ sudoers }}"
-
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.template:
         src: sudoers.j2

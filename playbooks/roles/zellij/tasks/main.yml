@@ -1,0 +1,17 @@
+---
+
+- name: Setup variables
+  ansible.builtin.set_fact:
+    app_name: "zellij"
+    app_version: "v0.37.2"
+
+- name: Set download_url variable
+  ansible.builtin.set_fact:
+    download_url: "https://github.com/zellij-org/zellij/releases/download/{{ app_version }}/{{ app_name }}-x86_64-unknown-linux-musl.tar.gz"
+    # download_url: "https://github.com/zellij-org/zellij/releases/download/v0.37.2/zellij-x86_64-unknown-linux-musl.tar.gz"
+
+- name: "Download and unarchive to temporary directory: {{ app_name }}"
+  ansible.builtin.unarchive:
+    src: "{{ download_url }}"
+    dest: "{{ ansible_user_dir }}/.local/bin"
+    remote_src: true

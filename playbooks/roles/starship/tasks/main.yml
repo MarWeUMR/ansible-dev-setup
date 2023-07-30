@@ -1,0 +1,22 @@
+---
+
+- name: Setup variables
+  ansible.builtin.set_fact:
+    app_name: "starship"
+    app_version: "v1.16.0"
+
+- name: Set download_url variable
+  ansible.builtin.set_fact:
+    download_url: "https://github.com/starship/starship/releases/download/{{ app_version }}/{{ app_name }}-x86_64-unknown-linux-musl.tar.gz"
+
+- name: "Download and unarchive to temporary directory: {{ app_name }}"
+  ansible.builtin.unarchive:
+    src: "{{ download_url }}"
+    dest: "{{ ansible_user_dir }}/.local/bin"
+    remote_src: true
+
+- name: "Update fish config - add init line: {{ app_name }}"
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.config/fish/config.fish"
+    line: "    {{ app_name }} init fish | source"
+    insertafter: '^\s*# sourcing tools'

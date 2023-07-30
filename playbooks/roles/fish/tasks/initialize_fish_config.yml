@@ -1,0 +1,19 @@
+---
+
+- name: Ensure fish config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/fish"
+    state: directory
+    mode: '0755'
+
+- name: Add basic fish config structure
+  ansible.builtin.template:
+    src: config.fish.j2
+    dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
+    mode: '0755'
+
+- name: Update fish config - add path env var
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.config/fish/config.fish"
+    line: "    fish_add_path {{ ansible_user_dir }}/.local/bin\n"
+    insertafter: '^\s*# additional environment paths'

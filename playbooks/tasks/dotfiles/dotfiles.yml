@@ -1,4 +1,9 @@
 ---
+
+# - name: Load vars from file
+#   ansible.builtin.include_vars:
+#     file: group_vars/os_Linux/github_releases.yml
+
 - name: Install dotfiles
   ansible.posix.synchronize:
     src: dotfiles/
@@ -7,6 +12,15 @@
     owner: false
     group: false
   tags: dotfiles
+
+# - name: Download and extract tar files
+#   ansible.builtin.unarchive:
+#     src: "{{ item.url }}"
+#     dest: "/{{ ansible_user_dir }}/.local/bin"
+#     remote_src: true
+#     creates: "/{{ ansible_user_dir }}/.local/bin/{{ item.url | basename | regex_replace('\\.tar\\.gz$', '') }}"
+#     include: "{{ item.binary_name }}"
+#   loop: "{{ releases }}"
 
 # - name: Install themes for bat
 #   ansible.builtin.command: "{{ bat_exec }} cache --build"

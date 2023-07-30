@@ -3,6 +3,18 @@
 - name: Install and configure dotfiles on localhost
   hosts: localhost
 
+  roles:
+    - role: fish
+    - role: atuin
+    - role: navi
+    - role: starship
+    - role: zoxide
+    - role: erdtree
+    - role: fzf
+    - role: bat
+    - role: zellij
+    - role: nvim
+
   vars:
 
     directories:
