@@ -12,3 +12,4 @@ apt_packages:
     - openssh-client
     - nodejs
     - npm
+    - ripgrep
