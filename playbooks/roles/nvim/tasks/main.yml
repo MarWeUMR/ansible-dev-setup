@@ -1,26 +1,13 @@
 ---
 
-- name: Download nvim.appimage
-  ansible.builtin.get_url:
-    url: "https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
-    dest: "/tmp/nvim.appimage"
-    mode: '0755'
+- name: "Download and unarchive to temporary directory: {{ app_name }}"
+  ansible.builtin.unarchive:
+    src: "https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+    dest: "{{ ansible_user_dir }}"
+    remote_src: true
 
-- name: Extract the AppImage
-  ansible.builtin.command:
-    cmd: "./nvim.appimage --appimage-extract"
-    chdir: "/tmp"
-    creates:
-      [
-        "/tmp/squashfs-root/usr/bin/nvim",
-        "/tmp/squashfs-root/usr/bin/tree-sitter"
-      ]
-
-- name: Move extracted nvim to /usr/local/bin/nvim
-  ansible.builtin.command:
-    cmd: "mv /tmp/squashfs-root/usr/bin/nvim {{ ansible_user_dir }}/.local/bin/nvim"
-    creates:
-      [
-        "{{ ansible_user_dir }}/.local/bin/nvim",
-        "{{ ansible_user_dir }}/.local/bin/tree-sitter"
-      ]
+- name: Create symbolic link
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/nvim-linux64/bin/nvim"
+    dest: "{{ ansible_user_dir }}/.local/bin/nvim"
+    state: link
