@@ -11,3 +11,15 @@
     src: "{{ ansible_user_dir }}/nvim-linux64/bin/nvim"
     dest: "{{ ansible_user_dir }}/.local/bin/nvim"
     state: link
+
+- name: Clone the LazyVim starter
+  ansible.builtin.git:
+    repo: 'https://github.com/LazyVim/starter.git'
+    dest: "{{ ansible_user_dir }}/.config/nvim"
+    clone: true
+    update: true
+
+- name: Remove the .git folder
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/nvim/.git"
+    state: absent
