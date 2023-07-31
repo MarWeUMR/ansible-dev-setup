@@ -10,3 +10,5 @@ apt_packages:
     - rsync
     - ca-certificates
     - openssh-client
+    - nodejs
+    - npm
