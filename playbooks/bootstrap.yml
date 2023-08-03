@@ -34,15 +34,6 @@
       changed_when: false
       failed_when: false
 
-    - name: Add DNS fallback
-      ansible.builtin.lineinfile:
-        path: /etc/systemd/resolved.conf
-        regexp: '^#?FallbackDNS='
-        line: FallbackDNS=9.9.9.9 1.1.1.1 8.8.8.8
-      become: true
-      when: in_docker.rc != 0
-      # when: "'Linux' in ansible_system"
-
     - name: Include os-specific package tasks
       ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
       tags: always
