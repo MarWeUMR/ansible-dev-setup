@@ -22,8 +22,8 @@
     repo: 'https://github.com/LazyVim/starter.git'
     dest: "{{ ansible_user_dir }}/.config/nvim"
     clone: true
-    update: true
-    version: '6.2.0'
+    version: main
+  when: not nvim_config.stat.exists
 
 - name: Remove the .git folder
   ansible.builtin.file:
