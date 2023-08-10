@@ -1,10 +1,8 @@
 ---
-
 apt_packages:
   cli:
     - htop
     - ssh
-    - stow
     - wget
     - xsel
     - rsync

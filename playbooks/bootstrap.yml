@@ -1,10 +1,8 @@
 ---
-
 - name: Bootstrap localhost
-  hosts: localhost
+  hosts: all
 
   handlers:
-
     - name: Remove passwordless sudo permissions
       ansible.builtin.file:
         path: "{{ sudoers }}"
@@ -17,7 +15,6 @@
       become: true
 
   tasks:
-
     - name: Add temporary passwordless sudo permissions
       ansible.builtin.template:
         src: sudoers.j2

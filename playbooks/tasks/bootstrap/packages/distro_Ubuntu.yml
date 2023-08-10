@@ -1,17 +1,16 @@
 ---
-
-- name: Install gpg keys
-  ansible.builtin.apt_key:
-    url: "{{ item['key'] | default(omit) }}"
-    keyring: "{{ item['keyring'] | default(omit) }}"
-    id: "{{ item['id'] | default(omit) }}"
-    keyserver: "{{ item['keyserver'] | default(omit) }}"
-  loop: "{{ repos }}"
-  loop_control:
-    label: "{{ item['name'] }}"
-  become: true
-  when: system_type in item['system_type']
-  tags: repos
+# - name: Install gpg keys
+#   ansible.builtin.apt_key:
+#     url: "{{ item['key'] | default(omit) }}"
+#     keyring: "{{ item['keyring'] | default(omit) }}"
+#     id: "{{ item['id'] | default(omit) }}"
+#     keyserver: "{{ item['keyserver'] | default(omit) }}"
+#   loop: "{{ repos }}"
+#   loop_control:
+#     label: "{{ item['name'] }}"
+#   become: true
+#   when: system_type in item['system_type']
+#   tags: repos
 
 # - name: Install repositories
 #   ansible.builtin.apt_repository:

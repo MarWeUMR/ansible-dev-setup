@@ -10,29 +10,36 @@
     - fish
 
 - name: install-Debian | Ensure dependencies are present.
+  become: true
   ansible.builtin.apt:
     name:
       - apt-transport-https
       - gnupg2
     state: present
 
+- name: install-Debian | Fetch fish repository key
+  ansible.builtin.uri:
+    url: "https://download.opensuse.org/repositories/shells:fish:release:3/Debian_10/Release.key"
+    return_content: yes
+  register: fish_repo_key
+
 - name: install-Debian | Add fish repository key
+  become: true
   ansible.builtin.apt_key:
-    keyserver: "{{ _fish_apt_keyserver | default(omit) }}"
-    url: "{{ _fish_apt_key_url | default(omit) }}"
-    id: "{{ _fish_apt_key_id | default(omit) }}"
+    data: "{{ fish_repo_key.content }}"
+    state: present
+
+- name: install-Debian | Add fish repository
+  become: true
+  ansible.builtin.apt_repository:
+    filename: shells_fish_release_3
+    repo: "deb http://download.opensuse.org/repositories/shells:/fish:/release:/3/Debian_10/ /"
     state: present
   tags:
     - fish
 
-- name: install-Debian | Add fish repository
-  ansible.builtin.apt_repository:
-    filename: shells_fish_release_{{ fish_release_version }}
-    repo: "{{ _fish_apt_repo_url }}"
-  tags:
-    - fish
-
 - name: install-Debian | Install fish
+  become: true
   ansible.builtin.apt:
     name: fish
     allow_unauthenticated: yes

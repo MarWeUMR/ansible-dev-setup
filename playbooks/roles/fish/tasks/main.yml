@@ -1,5 +1,4 @@
 ---
-
 - name: Print base msg
   ansible.builtin.debug:
     msg: >-

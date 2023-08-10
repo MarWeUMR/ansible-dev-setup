@@ -1,5 +1,2 @@
----
 _fish_apt_key_url: https://download.opensuse.org/repositories/shells:/fish:/release:/{{ fish_release_version }}/Debian_{{ ansible_facts.distribution_major_version }}{{ '.0' if ansible_facts.distribution_major_version is version('9', '<=') else '' }}/Release.key
-_fish_apt_keyserver: keyserver.ubuntu.com
-_fish_apt_key_id: 59FDA1CE1B84B3FAD89366C027557F056DC33CA5
-_fish_apt_repo_url: deb http://ppa.launchpad.net/fish-shell/release-{{ fish_release_version }}/ubuntu {{ ansible_facts.lsb.codename | lower }} main
+_fish_apt_repo_url: deb http://download.opensuse.org/repositories/shells:/fish:/release:/{{ fish_release_version }}/Debian_{{ ansible_facts.distribution_major_version }}{{ '.0' if ansible_facts.distribution_major_version is version('9', '<=') else '' }}/ /

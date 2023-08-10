@@ -1,9 +1,8 @@
 ---
-
 - name: Setup variables
   ansible.builtin.set_fact:
     app_name: "atuin"
-    app_version: "v15.0.0"
+    app_version: "v16.0.0"
 
 - name: Set download_url variable
   ansible.builtin.set_fact:

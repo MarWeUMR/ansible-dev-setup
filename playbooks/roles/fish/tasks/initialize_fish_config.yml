@@ -1,16 +1,22 @@
 ---
-
 - name: Ensure fish config directory exists
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config/fish"
     state: directory
-    mode: '0755'
+    mode: "0755"
+
+# TODO: move to better place
+- name: Ensure binaries directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+    mode: "0755"
 
 - name: Add basic fish config structure
   ansible.builtin.template:
     src: config.fish.j2
     dest: "{{ ansible_user_dir }}/.config/fish/config.fish"
-    mode: '0755'
+    mode: "0755"
 
 - name: Update fish config - add path env var
   ansible.builtin.lineinfile:
