@@ -1,6 +1,6 @@
 ---
 - name: Install and configure dotfiles on localhost
-  hosts: vms
+  hosts: localhost
 
   roles:
     - role: fish
@@ -15,55 +15,8 @@
     - role: nvim
     - role: fd-find
 
-  vars:
-    directories:
-      - path: "{{ ansible_user_dir }}/.ssh"
-    apt_packages:
-      cli:
-        - htop
-        - ssh
-        - wget
-        - xsel
-        - rsync
-        - ca-certificates
-        - openssh-client
-        - nodejs
-        - npm
-        - ripgrep
-
   tasks:
+
     - name: Include os-specific package tasks
-      ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
+      ansible.builtin.include_tasks: "tasks/bootstrap/packages/{{ ansible_distribution | lower }}.yml"
       tags: always
-        # - name: Create all dotfile directories
-        #   ansible.builtin.file:
-        #     path: "{{ item['path'] }}"
-        #     state: directory
-        #     mode: "{{ item['mode'] | default('0755') }}"
-        #   loop: "{{ directories }}"
-        #   loop_control:
-        #     label: "{{ item['path'] }}"
-        #   tags: always
-
-        # - name: Import core dotfiles tasks
-        #   ansible.builtin.import_tasks: tasks/dotfiles/dotfiles.yml
-        # - name: Import ssh tasks
-        #   ansible.builtin.import_tasks: tasks/dotfiles/ssh.yml
-
-        # - name: Import git tasks # must follow ssh key creation
-        #   ansible.builtin.import_tasks: tasks/dotfiles/git.yml
-        # - name: Import vim tasks
-        #   ansible.builtin.import_tasks: tasks/dotfiles/vim.yml
-
-        # - name: Import GitHub tasks
-        #   ansible.builtin.import_tasks: tasks/dotfiles/github.yml
-
-        # - name: Import zsh tasks
-        #   ansible.builtin.import_tasks: tasks/dotfiles/zsh.yml
-
-        # - name: Install Python packages
-        #   ansible.builtin.pip:
-        #     executable: "{{ pip_exec }}"
-        #     name: "{{ pypi_packages }}"
-        #     extra_args: --user
-        #   tags: python

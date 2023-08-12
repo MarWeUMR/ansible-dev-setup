@@ -1,56 +1,40 @@
 ---
-- name: Bootstrap localhost
-  hosts: all
-
-  handlers:
-    - name: Remove passwordless sudo permissions
-      ansible.builtin.file:
-        path: "{{ sudoers }}"
-        state: absent
-      become: true
-
-    - name: Restart dock to apply changes
-      ansible.builtin.command: killall Dock
-      changed_when: false
-      become: true
+- name: "Setup system"
+  hosts: localhost
 
   tasks:
-    - name: Add temporary passwordless sudo permissions
-      ansible.builtin.template:
-        src: sudoers.j2
-        dest: "{{ sudoers }}"
-        validate: /usr/sbin/visudo -csf %s
-        mode: 644
+
+    - name: Ensure binaries directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.local/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Ensure config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.config"
+        state: directory
+        mode: "0755"
+
+    - name: Load variables based on OS
+      ansible.builtin.include_vars:
+        file: "vars/{{ ansible_distribution | lower }}/packages.yml"
+
+    - name: Include tasks based on OS type
+      ansible.builtin.include_tasks: "tasks/bootstrap/packages/{{ ansible_distribution | lower }}.yml"
+
+    - name: Ensure ansible user directory exists
       become: true
-      notify: Remove passwordless sudo permissions
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/.ansible"
+        state: directory
+        mode: "0755"
 
-    # TODO: this should be replaced by systemd check
-    - name: Check if inside docker container
-      shell: grep -q docker /proc/1/cgroup
-      register: in_docker
-      changed_when: false
-      failed_when: false
-
-    - name: Include os-specific package tasks
-      ansible.builtin.include_tasks: "tasks/bootstrap/packages/os_{{ ansible_system }}.yml"
-      tags: always
-
-    # - name: Install root dotfiles
-    #   ansible.builtin.copy:
-    #     src: root/
-    #     dest: "{{ root_home }}/"
-    #     mode: 644
-    #   become: true
-    #   tags: [ root, dotfiles ]
-
-    - name: Configure system settings
-      ansible.builtin.include_tasks: "tasks/bootstrap/system/os_{{ ansible_system }}.yml"
-      tags: always
-
-- name: Import dotfiles playbook
-  ansible.builtin.import_playbook: dotfiles.yml
-  tags: dotfiles
-
-- name: Import secrets playbook
-  ansible.builtin.import_playbook: secrets.yml
-  tags: secrets
+    - name: Set user shell to fish
+      ignore_errors: true # this might not always work
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /usr/bin/fish
+        append: true
+      become: true
+      tags: user

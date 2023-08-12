@@ -1,0 +1,9 @@
+---
+- name: Set up machine with dotsfiles
+  hosts: localhost
+
+- name: Import bootstrap playbook
+  ansible.builtin.import_playbook: playbooks/bootstrap.yml
+
+- name: Import Ansible galaxy playbook
+  ansible.builtin.import_playbook: playbooks/dotfiles.yml
