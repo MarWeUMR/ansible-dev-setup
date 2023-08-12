@@ -29,3 +29,20 @@
   ansible.builtin.file:
     path: "{{ tempdir.path }}"
     state: absent
+
+- name: Ensure bat config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/bat"
+    state: directory
+    mode: "0755"
+
+- name: "Copy dotfiles for {{ app_name }}"
+  ansible.builtin.copy:
+    src: dotfiles/.config/{{ app_name }}
+    dest: "{{ ansible_user_dir }}/.config"
+  tags: dotfiles
+
+- name: Install themes for bat
+  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/bat cache --build"
+  changed_when: false
+  tags: dotfiles

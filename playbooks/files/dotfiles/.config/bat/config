@@ -1,4 +1,4 @@
---theme="Solarized-Light"
+--theme="Catppuccin-frappe"
 --pager="less -R"
 --map-syntax .ignore:.gitignore
 --tabs 2
