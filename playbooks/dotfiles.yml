@@ -14,6 +14,10 @@
     - role: zellij
     - role: nvim
     - role: fd-find
+    - { role: geerlingguy.docker, become: true }
+
+  vars_files:
+    - vars/docker_config.yml
 
   tasks:
 

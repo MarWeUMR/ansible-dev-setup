@@ -43,7 +43,7 @@
   become: true
   ansible.builtin.apt:
     name: fish
-    allow_unauthenticated: yes
+    allow_unauthenticated: true
     state: latest
     cache_valid_time: 600
   tags:
