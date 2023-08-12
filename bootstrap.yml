@@ -1,6 +1,6 @@
 ---
 - name: "Setup system"
-  hosts: localhost
+  hosts: [ docker, vms ]
 
   tasks:
 

@@ -1,6 +1,6 @@
 ---
 - name: Install and configure dotfiles on localhost
-  hosts: localhost
+  hosts: [ docker, vms ]
 
   roles:
     - role: fish

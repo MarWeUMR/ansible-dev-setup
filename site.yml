@@ -1,0 +1,9 @@
+---
+- name: Prepare the local machine to have all galaxy things ready
+  import_playbook: setup_dev_machine.yml
+
+- name: Prepare the remote system for dotfile installation
+  import_playbook: bootstrap.yml
+
+- name: Install dotfiles no the remote system
+  import_playbook: dotfiles.yml

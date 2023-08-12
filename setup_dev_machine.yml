@@ -1,0 +1,28 @@
+---
+- name: Install and update Ansible Galaxy collections
+  hosts: dev_machine
+
+  tasks:
+    - name: Copy Ansible Galaxy Roles
+      ansible.builtin.copy:
+        src: galaxy_roles.yml
+        dest: "{{ ansible_user_dir }}/.ansible/galaxy_roles.yml"
+        mode: "0755"
+
+    - name: Copy Ansible Galaxy Collections
+      ansible.builtin.copy:
+        src: galaxy_collections.yml
+        dest: "{{ ansible_user_dir }}/.ansible/galaxy_collections.yml"
+        mode: "0755"
+
+    - name: Install Ansible Galaxy Roles
+      community.general.ansible_galaxy_install:
+        type: role
+        requirements_file: "{{ ansible_user_dir }}/.ansible/galaxy_roles.yml"
+        force: true
+
+    - name: Install Ansible Galaxy Collections
+      community.general.ansible_galaxy_install:
+        type: collection
+        requirements_file: "{{ ansible_user_dir }}/.ansible/galaxy_collections.yml"
+        force: true

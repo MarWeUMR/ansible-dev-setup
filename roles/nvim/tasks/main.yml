@@ -23,9 +23,10 @@
     dest: "{{ ansible_user_dir }}/.config/nvim"
     clone: true
     version: main
-  when: not nvim_config.stat.exists
+  when: not nvim_config.stat.exists and inventory_hostname not in groups['dev_machine']
 
 - name: Remove the .git folder
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config/nvim/.git"
     state: absent
+  when: inventory_hostname not in groups['dev_machine']
